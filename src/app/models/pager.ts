@@ -25,8 +25,8 @@ export class DataTablePager {
       context.DisplayRowsEndIndex = context.TotalRowCount - 1;
     }
     if (bUpdateCache) {
-      context.Parent.StateManager.SetValue(context.Parent.ID, context.Parent.StateManager.CachedProperties.CurrentPage, context.CurrentPage);
-      context.Parent.StateManager.SetValue(context.Parent.ID, context.Parent.StateManager.CachedProperties.FirstDisplayedPageNumber, context.FirstDisplayedPageNumber);
+      context.Parent.StateManager.SetValue(context.Parent.ID, context.Parent.CacheProperties.CurrentPage, context.CurrentPage);
+      context.Parent.StateManager.SetValue(context.Parent.ID, context.Parent.CacheProperties.FirstDisplayedPageNumber, context.FirstDisplayedPageNumber);
     }
   };
   Go: (page: number) => void = (page: number) : void => {

@@ -45,12 +45,12 @@
     </div>
     <div [hidden]="Data?.Pager.TotalPageCount === 1">
         <span class="datatable-pager" (click)="Data?.Pager.Go(1)"><<</span>
-        <span class="datatable-pager" (click)="Data?.Pager.Go(Pager.CurrentPage - 1)"><</span>
+        <span class="datatable-pager" (click)="Data?.Pager.Go(Data?.Pager.CurrentPage - 1)"><</span>
         <span class="datatable-pager" (click)="Data?.Pager.Advance(false)">...</span>
         <span [class]="p === Data?.Pager.CurrentPage ? 'datatable-pager datatable-pager-current' : 'datatable-pager'" *ngFor="let p of Data?.Pager.DisplayedPageNumbers" (click)="Data?.Pager.Go(p)">{{p}}</span>
         <span class="datatable-pager" (click)="Data?.Pager.Advance(true)">...</span>
-        <span class="datatable-pager" (click)="Data?.Pager.Go(Data.Pager.CurrentPage + 1)">></span>
-        <span class="datatable-pager" (click)="Data?.Pager.Go(Data.Pager.TotalPageCount)">>></span>
+        <span class="datatable-pager" (click)="Data?.Pager.Go(Data?.Pager.CurrentPage + 1)">></span>
+        <span class="datatable-pager" (click)="Data?.Pager.Go(Data?.Pager.TotalPageCount)">>></span>
     </div>    
   </div>
 </div>
