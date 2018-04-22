@@ -6,6 +6,8 @@ It uses [ng-packagr](https://github.com/dherges/ng-packagr) to create a portable
 
 ## Build
 
+Run `npm install`
+
 Run `npm run packagr` to build the project. The build artifacts will be stored in the `angular-datatable` subdirectory.
 
 ## Demo

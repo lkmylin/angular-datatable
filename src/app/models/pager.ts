@@ -62,6 +62,7 @@ export class DataTablePager {
       context.CurrentPage = context.FirstDisplayedPageNumber + context.PageNumberDisplayCount - 1;
     }
     context.Update(true);
+    context.Parent.Update();
   };
 
   constructor (parent: DataTable, currentPage: number, rowCount: number, firstDisplayedPageNumber: number, rowsPerPage: number = 10, pageNumberDisplayCount: number = 10) {
