@@ -1,18 +1,24 @@
 # angular-datatable
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.4.
+It uses [ng-packagr](https://github.com/dherges/ng-packagr) to create a portable, AOT-compatible
+component library for Angular apps.
 
-It uses [ng-packagr](https://github.com/dherges/ng-packagr) to create a portable component library for Angular apps.
+## Building the package
 
-## Build
+Run `git clone https://github.com/lkmylin/angular-datatable <my-directory>`
+
+Run `cd <my-directory>`
 
 Run `npm install`
 
-Run `npm run packagr` to build the project. The build artifacts will be stored in the `angular-datatable` subdirectory.
+Run `npm run packagr`
+
+After the build process completes, output will be available in the `angular-datatable` subdirectory.
 
 ## Demo
 
-Run `ng build` to build the demo.
+Run `ng build` or `ng build -prod` to build the demo.
 
 Run `ng serve -o` to run the demo.
 
@@ -20,7 +26,7 @@ Run `ng serve -o` to run the demo.
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Installation
+## Installation from npm
 
 Run `npm install @lkmylin/angular-datatable --save`
 
