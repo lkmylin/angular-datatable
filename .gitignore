@@ -4,6 +4,9 @@
 /dist
 /tmp
 /out-tsc
+/.ng_pkg_build
+/angular-datatable
+angular-datatable.tgz
 
 # dependencies
 /node_modules
