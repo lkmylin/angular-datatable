@@ -19,6 +19,11 @@
   .datatable thead {
     background-color: #337ab7;
   }
+  .datatable-title {
+    font-weight: bold;
+    padding-left: 10px;
+    color: #337ab7;
+  }
   .datatable-alt-row {
     background-color: #CCCCCC;
   }

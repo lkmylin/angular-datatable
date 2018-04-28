@@ -32,6 +32,7 @@ describe("components/datatable", () => {
     _fixture = TestBed.createComponent(DataTableComponent);
     _component = _fixture.componentInstance;
     _component.ID = "table1";
+    _component.DataSource = "url";
     _component.PageNumberDisplayCount = 10;
     _component.RowsPerPage = 10;
     _fixture.detectChanges();

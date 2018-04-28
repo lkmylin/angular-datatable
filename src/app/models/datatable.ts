@@ -56,9 +56,10 @@ export class DataTable {
     context.ID = id;
     context.CacheProperties = new DataTableCacheProperties();
     context.StateManager = stateManager;
-    context.Rows = data;
+    context.Rows = data || [];
     context.Columns = [];
-    for (const property in data[0]) {
+    if (context.Rows.length === 0) return;
+    for (const property in context.Rows[0]) {
       context.Columns[context.Columns.length] = {
         ColumnID: property,
         SortOrder: stateManager.GetValue(context.ID, property + context.CacheProperties.SortOrder, 1)

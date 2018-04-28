@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from "@angular/core";
 import { Http, Response } from "@angular/http";
 import { StateManager } from "@lkmylin/angular-statemanager";
 import { DataTable } from "../../models/datatable";
@@ -11,25 +11,41 @@ import "rxjs/add/operator/catch";
   templateUrl: "./datatable.component.html",
   styleUrls: ["./datatable.component.css"]
 })
-export class DataTableComponent implements OnInit {
+export class DataTableComponent implements OnInit, OnChanges {
 
-  @Input("datasource") _dataSourceUrl: string;
+  @Input("datasource") DataSource: any;
   @Input("tableid") ID: string;
   @Input("pagesize") RowsPerPage: number = 10;
   @Input("pagerdisplaysize") PageNumberDisplayCount: number = 10;
   Data: DataTable;
 
+  private GetDataTable(data: Array<any>) : DataTable {
+    return new DataTable(this.ID, data, this._stateManager, this.RowsPerPage, this.PageNumberDisplayCount);
+  };
+
   constructor(private _http: Http, private _stateManager: StateManager) { }
 
   ngOnInit() {
     const context = this;
-    context._http.get(context._dataSourceUrl).map<Response, Array<any>>(response => response.json())
-      .catch<Array<any>, Array<any>>(error => {
-        console.log(error);
-        return null;
-      }).subscribe(data => {
-        context.Data = new DataTable(context.ID, data, this._stateManager, context.RowsPerPage, context.PageNumberDisplayCount);
-      });
+    if (typeof context.DataSource === "undefined") return;
+    if (typeof context.DataSource === "string") {
+      context._http.get(context.DataSource).map<Response, Array<any>>(response => response.json())
+        .catch<Array<any>, Array<any>>(error => {
+          console.log(error);
+          return null;
+        }).subscribe(data => {
+          context.Data = context.GetDataTable(data);
+        });
+    }
+    else {
+      context.Data = this.GetDataTable(context.DataSource);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.DataSource && typeof changes.DataSource.currentValue === "object") {
+      this.Data = this.GetDataTable(changes.DataSource.currentValue);
+    }    
   }
 
 }
