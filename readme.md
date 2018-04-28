@@ -4,33 +4,35 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 It uses [ng-packagr](https://github.com/dherges/ng-packagr) to create a portable, AOT-compatible
 component library for Angular apps.
 
+## Downloading the source code
+
+`git clone https://github.com/lkmylin/angular-datatable <my-directory>`
+
 ## Building the package
 
-Run `git clone https://github.com/lkmylin/angular-datatable <my-directory>`
+`cd <my-directory>`
 
-Run `cd <my-directory>`
+`npm install`
 
-Run `npm install`
-
-Run `npm run packagr`
+`npm run packagr`
 
 After the build process completes, output will be available in the `angular-datatable` subdirectory.
 
 ## Demo
 
-Run `ng build` or `ng build -prod` to build the demo.
+To build: `ng build` or `ng build -prod`
 
-Run `ng serve -o` to run the demo.
+To run: `ng serve -o`
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+`ng test`
 
 ## Installation from npm
 
-Run `npm install @lkmylin/angular-datatable --save`
+`npm install @lkmylin/angular-datatable --save`
 
-Run `npm install @lkmylin/angular-statemanager --save`
+`npm install @lkmylin/angular-statemanager --save`
 
 ## Implementation
 
@@ -48,12 +50,18 @@ In your bootstrap module:
 
 * add `{provide: "window", useValue: window}` to your providers
 
-* add a DataTableComponent: `<lkm-datatable tableid="table1" datasource="tableDataUrl" [pagesize]="10" [pagerdisplaysize]="10"></lkm-datatable>`
+* add a DataTableComponent:
 
-  * `tableDataUrl` can be any URL that returns json, e.g. a static file or REST API. It must return
+  `<lkm-datatable tableid="table1" [datasource]="dataSource" [pagesize]="10" [pagerdisplaysize]="10">Title</lkm-datatable>`
+
+  * `dataSource` can be an array or any URL that returns json, e.g. a static file or REST API. It must return
     an array of objects of the following form:
 
       * {Column1: "Column1Value", Column2: "Column2Value", Column3: "Column3Value" }
+
+      * If need the table to update dynamically in response to datasource changes, use an array
+
+      * If you use a string literal for `dataSource`, remember to wrap it in single quotes
 
   * `pagesize` is the number of data rows per page in the table
 
