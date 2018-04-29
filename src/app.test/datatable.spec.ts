@@ -45,11 +45,11 @@ describe("models/datatable", () => {
   }
 
   const _whenFilter = (filterColumn: string, filterText: string) => {
-    _table.Filter(filterColumn, filterText, true);
+    _table.Filter(filterColumn, filterText, false);
   };
 
   const _whenSort = (column: DataTableColumn) => {
-    _table.Sort(column, true);
+    _table.Sort(column, false);
   };
 
   const _thenAscending = () => {

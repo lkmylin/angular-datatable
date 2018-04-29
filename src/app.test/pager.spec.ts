@@ -18,7 +18,7 @@ describe("models/pager", () => {
     spyOn(_stateManager, "SetValue");
     if (spy) spy();
     _table = new DataTable(_data.ID, _data.Rows, _stateManager, _data.RowsPerPage, _data.PageNumberDisplayCount);
-    spyOn(_table, "Update");
+    spyOn(_table, "SetDisplay");
     _pager = _table.Pager;
   };
 
@@ -117,10 +117,10 @@ describe("models/pager", () => {
       expect(_pager.DisplayedPageNumbers).toEqual([6,7,8,9,10,11,12,13,14,15]);
     });
 
-    it("should call the parent's update method", () => {
+    it("should call the parent's SetDisplay method", () => {
       _setup(50);
       _whenGo(3);
-      expect(_pager.Parent.Update).toHaveBeenCalled();
+      expect(_pager.Parent.SetDisplay).toHaveBeenCalled();
     });
 
   });
@@ -166,10 +166,10 @@ describe("models/pager", () => {
       expect(_stateManager.SetValue).toHaveBeenCalledWith(_data.ID, _cacheProperties.FirstDisplayedPageNumber, 11);
     });
 
-    it("should call parent's update method", () => {
+    it("should call parent's SetDisplay method", () => {
       _setup(150);
       _whenAdvance(true);
-      expect(_pager.Parent.Update).toHaveBeenCalled();
+      expect(_pager.Parent.SetDisplay).toHaveBeenCalled();
     });
 
   });

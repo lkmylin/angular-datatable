@@ -4,17 +4,17 @@
   </div>
     <div class="datatable-right" *ngIf="Data?.Rows.length > 0">
       <span>Filter By:</span>
-      <select #filterSelect (change)="Data?.Filter(filterSelect.value, filter.value, true)">
+      <select #filterSelect (change)="Data?.Filter(filterSelect.value, filter.value, false)">
         <option value="{{column.ColumnID}}" *ngFor="let column of Data?.Columns" [selected]="column.ColumnID === Data?.FilterColumn">{{column.ColumnID}}</option>
       </select>
       <span>Filter:</span>
-      <input type="text" #filter (keyup)="Data?.Filter(filterSelect.value, filter.value, true)" value="{{Data?.FilterText}}"/>
+      <input type="text" #filter (keyup)="Data?.Filter(filterSelect.value, filter.value, false)" value="{{Data?.FilterText}}"/>
     </div>
     <table class="datatable" *ngIf="Data?.Rows.length > 0">
       <thead>
         <tr>
           <th *ngFor="let column of Data?.Columns">
-            <span (click)="Data?.Sort(column, true)">{{column.ColumnID}}</span>
+            <span (click)="Data?.Sort(column, false)">{{column.ColumnID}}</span>
           </th>
         </tr>
       </thead>
