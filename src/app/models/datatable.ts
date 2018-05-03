@@ -26,35 +26,41 @@ export class DataTable {
         }
     }
   };
-  Filter(filterColumn: string, filterText: string, bInit: boolean) : void {
-    const context = this;    
-    context.FilteredRows = context.Rows;
-    context.FilterText = filterText.toLowerCase();
-    context.FilterColumn = filterColumn;
-    const hasFilter = context.FilterText !== "";
-    if (hasFilter) {
-      context.FilteredRows = context.FilteredRows.filter(row => row[context.FilterColumn].toLowerCase().search(context.FilterText) > -1);      
-    }
-    if (hasFilter || !bInit) {
-      context.Pager = new DataTablePager(context, context.Pager.CurrentPage, context.FilteredRows.length, context.Pager.FirstDisplayedPageNumber, context.Pager.RowsPerPage, context.Pager.PageNumberDisplayCount);
-    }
-    if (!bInit) {
+  Update(filterColumn: string, filterText: string, column: DataTableColumn) : void {
+    const context = this;
+    if (filterColumn) {
+      context.FilteredRows = context.Rows;
+      context.FilterText = filterText.toLowerCase();
+      context.FilterColumn = filterColumn;
       context.StateManager.SetValue(context.ID, context.CacheProperties.FilterColumn, context.FilterColumn);
       context.StateManager.SetValue(context.ID, context.CacheProperties.FilterText, context.FilterText);
-      context.SetDisplay();
+      context.Filter();
+      context.MakePager(context.Pager.CurrentPage, context.FilteredRows.length, context.Pager.FirstDisplayedPageNumber, context.Pager.RowsPerPage, context.Pager.PageNumberDisplayCount);
     }
-  };
-  Sort(column: DataTableColumn, bInit: boolean) : void {
-    const context = this;
-    column.SortOrder = !bInit ? -1 * column.SortOrder : column.SortOrder;
-    context.SortColumn = column;
-    context.Rows = context.Rows.sort((x, y) => x[context.SortColumn.ColumnID].toLowerCase() > y[context.SortColumn.ColumnID].toLowerCase() ? context.SortColumn.SortOrder : -1 * context.SortColumn.SortOrder);
-    context.FilteredRows = context.FilteredRows.sort((x, y) => x[context.SortColumn.ColumnID].toLowerCase() > y[context.SortColumn.ColumnID].toLowerCase() ? context.SortColumn.SortOrder : -1 * context.SortColumn.SortOrder);
-    if (!bInit) {
+    if (column) {
+      column.SortOrder = -1 * column.SortOrder;
+      context.SortColumn = column;
       context.StateManager.SetValue(context.ID, context.CacheProperties.SortColumn, context.SortColumn.ColumnID);
       context.StateManager.SetValue(context.ID, context.SortColumn.ColumnID + context.CacheProperties.SortOrder, context.SortColumn.SortOrder);
-      context.SetDisplay();
     }
+    context.Sort();
+    context.SetDisplay();
+  };
+  private Filter() : void {
+    const context = this;
+    if (context.FilterText === "") {
+      context.FilteredRows = context.Rows;
+    }
+    else {
+      context.FilteredRows = context.Rows.filter(row => row[context.FilterColumn].toLowerCase().search(context.FilterText) > -1);
+    }
+  };
+  private Sort() : void {
+    const context = this;
+    context.FilteredRows = context.FilteredRows.sort((x, y) => x[context.SortColumn.ColumnID].toLowerCase() > y[context.SortColumn.ColumnID].toLowerCase() ? context.SortColumn.SortOrder : -1 * context.SortColumn.SortOrder);
+  };
+  private MakePager(currentPage: number, totalRowCount: number, firstDisplayedPageNumber: number, rowsPerPage: number, pageNumberDisplayCount: number) : void {
+    this.Pager = new DataTablePager(this, currentPage, totalRowCount, firstDisplayedPageNumber, pageNumberDisplayCount);
   };
 
   constructor(id: string, data: Array<any>, stateManager: IStateManager, rowsPerPage: number = 10, pageNumberDisplayCount: number = 10) {
@@ -63,7 +69,6 @@ export class DataTable {
     context.CacheProperties = new DataTableCacheProperties();
     context.StateManager = stateManager;
     context.Rows = data || [];
-    context.FilteredRows = [];
     context.Columns = [];
     if (context.Rows.length === 0) return;
     for (const property in context.Rows[0]) {
@@ -78,9 +83,9 @@ export class DataTable {
     context.FilterText = context.StateManager.GetValue(context.ID, context.CacheProperties.FilterText, "");
     const currentPage = context.StateManager.GetValue(context.ID, context.CacheProperties.CurrentPage, 1);
     const firstDisplayedPageNumber = context.StateManager.GetValue(context.ID, context.CacheProperties.FirstDisplayedPageNumber, 1);
-    context.Pager = new DataTablePager(context, currentPage, context.Rows.length, firstDisplayedPageNumber, rowsPerPage, pageNumberDisplayCount);
-    context.Sort(context.SortColumn, true);
-    context.Filter(context.FilterColumn, context.FilterText, true);
+    context.Filter();
+    context.Sort();
+    context.MakePager(currentPage, context.FilteredRows.length, firstDisplayedPageNumber, rowsPerPage, pageNumberDisplayCount);
     context.SetDisplay();
   }
     

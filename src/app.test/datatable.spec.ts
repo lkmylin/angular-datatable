@@ -45,11 +45,11 @@ describe("models/datatable", () => {
   }
 
   const _whenFilter = (filterColumn: string, filterText: string) => {
-    _table.Filter(filterColumn, filterText, false);
+    _table.Update(filterColumn, filterText, null);
   };
 
   const _whenSort = (column: DataTableColumn) => {
-    _table.Sort(column, false);
+    _table.Update(null, null, column);
   };
 
   const _thenAscending = () => {
@@ -153,7 +153,7 @@ describe("models/datatable", () => {
     expect(_stateManager.SetValue).not.toHaveBeenCalled();
   });
 
-  describe("Filter", () => {
+  describe("Update", () => {
 
     it("should filter by selected column", () => {
       _setup(50);
@@ -173,10 +173,6 @@ describe("models/datatable", () => {
       _whenFilter("Column3", "Value 7");
       expect(_stateManager.SetValue).toHaveBeenCalledWith(_data.ID, _cacheProperties.FilterText, "value 7");
     });
-
-  });
-
-  describe("Sort", () => {
 
     it("should sort rows by specified column", () => {
       _setup(-1);
