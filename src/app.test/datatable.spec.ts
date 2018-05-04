@@ -15,8 +15,8 @@ describe("models/datatable", () => {
     _stateManager = new StateManagerMock();
     spyOn(_stateManager, "SetValue");
     if (spy) spy();
-    const rows = recordCount < 0 ? [] : _data.Rows;
-    if (rows.length === 0) {
+    const rows = _data.Rows;
+    if (recordCount < 0) {
       _data.SortFriendlyRows.forEach(row => rows.push(row));
     }
     _table = new DataTable(_data.ID, rows, _stateManager, _data.RowsPerPage, _data.PageNumberDisplayCount);
@@ -87,6 +87,13 @@ describe("models/datatable", () => {
   it("should be instantiated", () => {
     _setup();
     expect(_table).toBeTruthy();
+  });
+
+  it("should return early if no data passed in", () => {
+    _setup(0, () => spyOn(_stateManager, "GetValue"));
+    expect(_table.Rows.length).toBe(0);
+    expect(_table.Columns.length).toBe(0);
+    expect(_stateManager.GetValue).not.toHaveBeenCalled();
   });
 
   it("should set columns property", () => {
@@ -174,6 +181,13 @@ describe("models/datatable", () => {
       expect(_stateManager.SetValue).toHaveBeenCalledWith(_data.ID, _cacheProperties.FilterText, "value 7");
     });
 
+    it("should update pager if filtered", () => {
+      _setup(200);
+      _whenFilter("Column 1", "Column 1 Value 1");
+      expect(_table.Pager.TotalPageCount).toBe(12);
+      expect(_table.Pager.TotalRowCount).toBe(111);
+    });
+
     it("should sort rows by specified column", () => {
       _setup(-1);
       _thenAscending();
@@ -188,6 +202,12 @@ describe("models/datatable", () => {
       _whenSort(_table.Columns[1]);
       expect(_stateManager.SetValue).toHaveBeenCalledWith(_data.ID, _cacheProperties.SortColumn, _table.Columns[1].ColumnID);
       expect(_stateManager.SetValue).toHaveBeenCalledWith(_data.ID, _table.Columns[1].ColumnID + _cacheProperties.SortOrder, -1);
+    });
+
+    it("should update display", () => {
+      _setup();
+      _whenFilter("Column3", "Value 4");
+      expect(_table.DisplayedRows).toEqual([{"Column 1": "Column 1 Value 4", "Column 2": "Column 2 Value 4", "Column3": "Column 3 Value 4"}]);
     });
 
   });

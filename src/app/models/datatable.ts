@@ -26,7 +26,7 @@ export class DataTable {
         }
     }
   };
-  Update(filterColumn: string, filterText: string, column: DataTableColumn) : void {
+  Update(filterColumn: string, filterText: string, sortColumn: DataTableColumn) : void {
     const context = this;
     if (filterColumn) {
       context.FilteredRows = context.Rows;
@@ -37,9 +37,9 @@ export class DataTable {
       context.Filter();
       context.MakePager(context.Pager.CurrentPage, context.FilteredRows.length, context.Pager.FirstDisplayedPageNumber, context.Pager.RowsPerPage, context.Pager.PageNumberDisplayCount);
     }
-    if (column) {
-      column.SortOrder = -1 * column.SortOrder;
-      context.SortColumn = column;
+    if (sortColumn) {
+      sortColumn.SortOrder = -1 * sortColumn.SortOrder;
+      context.SortColumn = sortColumn;
       context.StateManager.SetValue(context.ID, context.CacheProperties.SortColumn, context.SortColumn.ColumnID);
       context.StateManager.SetValue(context.ID, context.SortColumn.ColumnID + context.CacheProperties.SortOrder, context.SortColumn.SortOrder);
     }
@@ -77,12 +77,12 @@ export class DataTable {
         SortOrder: stateManager.GetValue(context.ID, property + context.CacheProperties.SortOrder, 1)
       };
     }
+    const currentPage = context.StateManager.GetValue(context.ID, context.CacheProperties.CurrentPage, 1);
+    const firstDisplayedPageNumber = context.StateManager.GetValue(context.ID, context.CacheProperties.FirstDisplayedPageNumber, 1);
     const sortColumnID = context.StateManager.GetValue(context.ID, context.CacheProperties.SortColumn, context.Columns[0].ColumnID);
     context.SortColumn = context.Columns.filter(c => c.ColumnID === sortColumnID)[0] || context.Columns[0];
     context.FilterColumn = context.StateManager.GetValue(context.ID, context.CacheProperties.FilterColumn, context.Columns[0].ColumnID);
-    context.FilterText = context.StateManager.GetValue(context.ID, context.CacheProperties.FilterText, "");
-    const currentPage = context.StateManager.GetValue(context.ID, context.CacheProperties.CurrentPage, 1);
-    const firstDisplayedPageNumber = context.StateManager.GetValue(context.ID, context.CacheProperties.FirstDisplayedPageNumber, 1);
+    context.FilterText = context.StateManager.GetValue(context.ID, context.CacheProperties.FilterText, "");    
     context.Filter();
     context.Sort();
     context.MakePager(currentPage, context.FilteredRows.length, firstDisplayedPageNumber, rowsPerPage, pageNumberDisplayCount);

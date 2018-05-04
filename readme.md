@@ -32,8 +32,6 @@ To run: `ng serve -o`
 
 `npm install @lkmylin/angular-datatable --save`
 
-`npm install @lkmylin/angular-statemanager --save`
-
 ## Implementation
 
 In your bootstrap module:
