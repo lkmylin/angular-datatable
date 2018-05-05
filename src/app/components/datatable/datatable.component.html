@@ -2,60 +2,60 @@
   <div class="datatable-left datatable-title">
     <ng-content></ng-content>
   </div>
-    <div class="datatable-right" *ngIf="Data?.Rows.length > 0">
-      <span>Filter By:</span>
-      <select #filterSelect (change)="Data?.Update(filterSelect.value, filter.value, null)">
-        <option value="{{column.ColumnID}}" *ngFor="let column of Data?.Columns" [selected]="column.ColumnID === Data?.FilterColumn">{{column.ColumnID}}</option>
-      </select>
-      <span>Filter:</span>
-      <input type="text" #filter (keyup)="Data?.Update(filterSelect.value, filter.value, null)" value="{{Data?.FilterText}}"/>
-    </div>
-    <table class="datatable" *ngIf="Data?.Rows.length > 0">
-      <thead>
-        <tr>
-          <th *ngFor="let column of Data?.Columns">
-            <span (click)="Data?.Update(null, null, column)">{{column.ColumnID}}</span>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of Data?.DisplayedRows;let i = index;" [class]="i % 2 == 0 ? '' : 'datatable-alt-row'">
-          <td *ngFor="let column of Data?.Columns">{{row[column.ColumnID]}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="datatable-full-left datatable-center datatable-padding5" *ngIf="Data?.Rows.length > 0">
-      <div class="datatable-left">
-        <div *ngIf="Data?.Pager.TotalPageCount === 1">
-          <div *ngIf="Data?.Pager.TotalRowCount === 0">
-            <span>No results</span>
-          </div>
-          <div *ngIf="Data?.Pager.TotalRowCount === 1">
-            <span>Displaying 1 record</span>
-          </div>
-          <div *ngIf="Data?.Pager.TotalRowCount > 1">
-            <span>Displaying {{Data?.Pager.TotalRowCount.toLocaleString()}} records</span>
-          </div>
+  <div class="datatable-right" *ngIf="Data?.Rows.length > 0">
+    <span>Filter By:</span>
+    <select #filterSelect (change)="Data?.Update(filterSelect.value, filter.value, null)">
+      <option value="{{column.ColumnID}}" *ngFor="let column of Data?.Columns" [selected]="column.ColumnID === Data?.FilterColumn">{{column.ColumnID}}</option>
+    </select>
+    <span>Filter:</span>
+    <input type="text" #filter (keyup)="Data?.Update(filterSelect.value, filter.value, null)" value="{{Data?.FilterText}}"/>
+  </div>
+  <table class="datatable" *ngIf="Data?.Rows.length > 0">
+    <thead>
+      <tr>
+        <th *ngFor="let column of Data?.Columns">
+          <span (click)="Data?.Update(null, null, column)">{{column.ColumnID}}</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of Data?.DisplayedRows;let i = index;" [class]="i % 2 == 0 ? '' : 'datatable-alt-row'">
+        <td *ngFor="let column of Data?.Columns">{{row[column.ColumnID]}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="datatable-full-left datatable-center datatable-padding5" *ngIf="Data?.Rows.length > 0">
+    <div class="datatable-left">
+      <div *ngIf="Data?.Pager.TotalPageCount === 1">
+        <div *ngIf="Data?.Pager.TotalRowCount === 0">
+          <span>No results</span>
         </div>
-        <div *ngIf="Data?.Pager.TotalPageCount > 1">
-          <div *ngIf="Data?.Pager.CurrentPage === Data?.Pager.TotalPageCount && Data?.DisplayedRows.length === 1">
-            <span>Displaying record {{Data?.Pager.TotalRowCount.toLocaleString()}} of {{Data?.Pager.TotalRowCount.toLocaleString()}}</span>
-          </div>
-          <div *ngIf="Data?.DisplayedRows.length !== 1">
-            <span>Displaying {{(Data?.Pager.DisplayRowsStartIndex+1).toLocaleString()}}-{{(Data?.Pager.DisplayRowsEndIndex+1).toLocaleString()}} of {{Data?.Pager.TotalRowCount.toLocaleString()}} records</span>
-          </div>
+        <div *ngIf="Data?.Pager.TotalRowCount === 1">
+          <span>Displaying 1 record</span>
+        </div>
+        <div *ngIf="Data?.Pager.TotalRowCount > 1">
+          <span>Displaying {{Data?.Pager.TotalRowCount.toLocaleString()}} records</span>
         </div>
       </div>
-      <div [hidden]="Data?.Pager.TotalPageCount === 1">
-          <span class="datatable-pager" (click)="Data?.Pager.Go(1)"><<</span>
-          <span class="datatable-pager" (click)="Data?.Pager.Go(Data?.Pager.CurrentPage - 1)"><</span>
-          <span class="datatable-pager" (click)="Data?.Pager.Advance(false)">...</span>
-          <span [class]="p === Data?.Pager.CurrentPage ? 'datatable-pager datatable-pager-current' : 'datatable-pager'" *ngFor="let p of Data?.Pager.DisplayedPageNumbers" (click)="Data?.Pager.Go(p)">{{p}}</span>
-          <span class="datatable-pager" (click)="Data?.Pager.Advance(true)">...</span>
-          <span class="datatable-pager" (click)="Data?.Pager.Go(Data?.Pager.CurrentPage + 1)">></span>
-          <span class="datatable-pager" (click)="Data?.Pager.Go(Data?.Pager.TotalPageCount)">>></span>
-      </div>    
+      <div *ngIf="Data?.Pager.TotalPageCount > 1">
+        <div *ngIf="Data?.Pager.CurrentPage === Data?.Pager.TotalPageCount && Data?.DisplayedRows.length === 1">
+          <span>Displaying record {{Data?.Pager.TotalRowCount.toLocaleString()}} of {{Data?.Pager.TotalRowCount.toLocaleString()}}</span>
+        </div>
+        <div *ngIf="Data?.DisplayedRows.length !== 1">
+          <span>Displaying {{(Data?.Pager.DisplayRowsStartIndex+1).toLocaleString()}}-{{(Data?.Pager.DisplayRowsEndIndex+1).toLocaleString()}} of {{Data?.Pager.TotalRowCount.toLocaleString()}} records</span>
+        </div>
+      </div>
     </div>
+    <div [hidden]="Data?.Pager.TotalPageCount === 1">
+        <span class="datatable-pager" (click)="Data?.Pager.Go(1)"><<</span>
+        <span class="datatable-pager" (click)="Data?.Pager.Go(Data?.Pager.CurrentPage - 1)"><</span>
+        <span class="datatable-pager" (click)="Data?.Pager.Advance(false)">...</span>
+        <span [class]="p === Data?.Pager.CurrentPage ? 'datatable-pager datatable-pager-current' : 'datatable-pager'" *ngFor="let p of Data?.Pager.DisplayedPageNumbers" (click)="Data?.Pager.Go(p)">{{p}}</span>
+        <span class="datatable-pager" (click)="Data?.Pager.Advance(true)">...</span>
+        <span class="datatable-pager" (click)="Data?.Pager.Go(Data?.Pager.CurrentPage + 1)">></span>
+        <span class="datatable-pager" (click)="Data?.Pager.Go(Data?.Pager.TotalPageCount)">>></span>
+    </div>    
+  </div>
 </div>
 <div class="datatable datatable-full-left datatable-padding5" *ngIf="Data?.Rows.length === 0">
     <span>No data</span>

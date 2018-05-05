@@ -30,7 +30,7 @@ export class DataTable {
     const context = this;
     if (filterColumn) {
       context.FilteredRows = context.Rows;
-      context.FilterText = filterText.toLowerCase();
+      context.FilterText = filterText.trim().toLowerCase();
       context.FilterColumn = filterColumn;
       context.StateManager.SetValue(context.ID, context.CacheProperties.FilterColumn, context.FilterColumn);
       context.StateManager.SetValue(context.ID, context.CacheProperties.FilterText, context.FilterText);
