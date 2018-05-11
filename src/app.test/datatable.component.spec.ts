@@ -109,9 +109,19 @@ describe("components/datatable", () => {
   it("should display column headers", () => {
     _setup();
     expect(_fixture.debugElement.queryAll(By.css("th")).length).toBe(_component.Data.Columns.length);
-    expect(_fixture.debugElement.queryAll(By.css("th"))[0].nativeElement.innerText).toBe(_component.Data.Columns[0].ColumnID);
-    expect(_fixture.debugElement.queryAll(By.css("th"))[1].nativeElement.innerText).toBe(_component.Data.Columns[1].ColumnID);
-    expect(_fixture.debugElement.queryAll(By.css("th"))[2].nativeElement.innerText).toBe(_component.Data.Columns[2].ColumnID);
+    _component.Data.Columns.forEach((column, index) => {
+      expect(_fixture.debugElement.queryAll(By.css("th"))[index].nativeElement.innerText).toBe(column.ColumnID);
+    });
+  });
+
+  it("should contain filter control", () => {
+    _setup();
+    expect(_fixture.debugElement.queryAll(By.css("input[type=text]")).length).toBe(1);
+    expect(_fixture.debugElement.queryAll(By.css("select")).length).toBe(1);
+    expect(_fixture.debugElement.queryAll(By.css("option")).length).toBe(_component.Data.Columns.length);
+    _component.Data.Columns.forEach((column, index) => {
+      expect(_fixture.debugElement.queryAll(By.css("option"))[index].nativeElement.innerText).toBe(column.ColumnID);
+    });
   });
 
   describe("pager left double-arrow click", () => {
