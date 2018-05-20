@@ -73,6 +73,9 @@ export class DataTablePager {
     context.CurrentPage = currentPage;    
     context.FirstDisplayedPageNumber = firstDisplayedPageNumber;
     context.TotalRowCount = rowCount;
+    if (context.FirstDisplayedPageNumber <= context.CurrentPage - context.PageNumberDisplayCount) {
+      context.FirstDisplayedPageNumber = context.CurrentPage - context.PageNumberDisplayCount + 1;
+    }
     if (context.TotalRowCount > context.RowsPerPage) {
       context.TotalPageCount = Math.floor(context.TotalRowCount / context.RowsPerPage);
       if (context.TotalRowCount % context.RowsPerPage !== 0) {
@@ -84,9 +87,9 @@ export class DataTablePager {
     }
     if (context.CurrentPage > context.TotalPageCount) {
       context.CurrentPage = context.TotalPageCount;
-      context.FirstDisplayedPageNumber = context.TotalPageCount - context.PageNumberDisplayCount + 1;
-      if (context.FirstDisplayedPageNumber < 1) context.FirstDisplayedPageNumber = 1;
+      context.FirstDisplayedPageNumber = context.TotalPageCount - context.PageNumberDisplayCount + 1;      
     }
+    if (context.FirstDisplayedPageNumber < 1) context.FirstDisplayedPageNumber = 1;
     context.SetDisplay(false);
   };
 

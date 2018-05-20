@@ -84,6 +84,11 @@ describe("models/pager", () => {
     expect(_pager.DisplayRowsEndIndex).toBe(56);
   });
 
+  it("should calculate first page in pager display if necessary", () => {
+    _setup(400, () => _givenCacheValues(1, 40));
+    expect(_pager.FirstDisplayedPageNumber).toBe(31);
+  });
+
   describe("Go", () => {
 
     const _whenGo = (page: number) => {
