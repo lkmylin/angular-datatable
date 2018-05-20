@@ -39,8 +39,8 @@ describe("components/datatable", () => {
       spyOn(http, "get").and.callFake(url => Observable.of(response));
     }
     _fixture.detectChanges();
-    spyOn(_component.Data.Pager, "Go");
-    spyOn(_component.Data.Pager, "Advance");
+    spyOn(_component.Data.Pager, "Go").and.callThrough();
+    spyOn(_component.Data.Pager, "Advance").and.callThrough();
   };
 
   const _teardown = () : void => {
@@ -73,8 +73,13 @@ describe("components/datatable", () => {
     _fixture.debugElement.queryAll(By.css(".datatable-pager"))[_data.PageNumberDisplayCount + 4].nativeElement.click();
   };
 
-  const _whenClickRightDoubleArrow = () : void => {
+  const _whenClickRightDoubleArrow = () => {
     _fixture.debugElement.queryAll(By.css(".datatable-pager"))[_data.PageNumberDisplayCount + 5].nativeElement.click();
+    _fixture.detectChanges();
+  };
+
+  const _thenInformation = (information: string) : void => {
+    expect(_fixture.debugElement.queryAll(By.css("div"))[4].nativeElement.innerText.trim()).toBe(information);
   };
 
   afterEach(_teardown);
@@ -98,7 +103,29 @@ describe("components/datatable", () => {
 
   it("should display information", () => {
     _setup();
-    expect(_fixture.debugElement.queryAll(By.css("div"))[4].nativeElement.innerText.trim()).toBe("Displaying 1-10 of 97 records");
+    _thenInformation("Displaying 1-10 of 97 records");
+  });
+
+  it("should display correct information for single row", () => {
+    _setup(true, 1);
+    _thenInformation("Displaying 1 record");
+  });
+
+  it("should display correct information for single page", () => {
+    _setup(false, 6);
+    _thenInformation("Displaying 6 records");
+  });
+
+  it("should display correct information for last page", () => {
+    _setup();
+    _whenClickRightDoubleArrow();
+    _thenInformation("Displaying 91-97 of 97 records");
+  });
+
+  it("should display correct information for single row on last page", () => {
+    _setup(true, 91);
+    _whenClickRightDoubleArrow();
+    _thenInformation("Displaying record 91 of 91");
   });
 
   it("should display pager", () => {
